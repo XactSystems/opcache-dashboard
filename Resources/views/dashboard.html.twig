@@ -1,0 +1,93 @@
+{% extends "@XactOPCacheDashboard/layout.html.twig" %}
+
+{% dump(status) %}
+
+{% set hitRate = status['opcache_statistics']['opcache_hit_rate'] | round(2) %}
+{% set missRate = 100 - hitRate %}
+
+{% set totalMemory = configuration['directives']['opcache.memory_consumption'] /1048576 %}
+{% set usedMemory = status['memory_usage']['used_memory'] / 1048576 %}
+{% set freeMemory = status['memory_usage']['free_memory'] / 1048576 %}
+{% set wastedMemory = status['memory_usage']['wasted_memory'] / 1048576 %}
+{% set wastedMemoryPct = (wastedMemory / totalMemory) *100 | round(2) %}
+{% set usedMemoryPct = (usedMemory / totalMemory) *100 | round(2) %}
+{% set freeMemoryPct = (freeMemory / totalMemory) *100 | round(2) %}
+
+{% set totalKeys = status['opcache_statistics']['max_cached_keys'] %}
+{% set usedKeys = status['opcache_statistics']['num_cached_keys'] %}
+{% set freeKeys = totalKeys - usedKeys %}
+{% set usedKeysPct = (usedKeys / totalKeys) *100 | round(2) %}
+{% set freeKeysPct = (freeKeys / totalKeys) *100 | round(2) %}
+
+{% block content %}
+<div class="card">
+	<div class="card-body">
+		<h2 class="card-title">{{ 'OPCache Dashboard'|trans }}</h2>
+		<p class="card-text">PHP: {{ phpVersion }} and OPcache: {{ configuration['version']['version'] }}</p>
+
+		<h3 class="mt-4">Hits: {{ hitRate }}%</h3>
+		<div class="progress">
+			<div class="progress-bar bg-success" role="progressbar" style="width: {{ hitRate }}%" aria-valuenow="{{ hitRate }}" aria-valuemin="0" aria-valuemax="{{ hitRate }}">
+				<span class="sr-only">Hits</span>
+			</div>
+			<div class="progress-bar bg-warning" role="progressbar" style="width: {{ missRate }}%" aria-valuenow="{{ missRate }}" aria-valuemin="0" aria-valuemax="{{ missRate }}">
+				<span class="sr-only">Misses</span>
+			</div>
+		</div>
+
+		<h3 class="mt-4">Memory: {{ (wastedMemory + usedMemory) | round(2) }}MB of {{ totalMemory }}MB</h3>
+		<div class="progress">
+			<div class="progress-bar bg-danger" style="width: {{ wastedMemoryPct  }}%">
+				<span class="sr-only">Wasted memory</span>
+			</div>
+			<div class="progress-bar bg-warning" style="width: {{ usedMemoryPct }}%">
+				<span class="sr-only">Used memory</span>
+			</div>
+			<div class="progress-bar bg-success" style="width: {{ freeMemoryPct }}%">
+				<span class="sr-only">Free memory</span>
+			</div>
+		</div>
+
+		<h3 class="mt-4">Keys: {{ usedKeys }} of {{ totalKeys }}</h2>
+		<div class="progress">
+			<div class="progress-bar bg-warning" style="width: {{ usedKeysPct }}%">
+				<span class="sr-only">Used keys</span>
+			</div>
+			<div class="progress-bar bg-success" style="width: {{ freeKeysPct }}%">
+				<span class="sr-only">Free keys</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<h2 class="mt-5">Status</h2>
+<div class="table-responsive">
+	<table class="table table-striped table-hover">
+		{% for key, value in status if key != 'scripts' %}
+			{% if value is iterable %}
+				{% for key1, value1 in value %}
+					{% if value1 is iterable %}
+						{% for key2, value2 in value1 %}
+							<tr><th class="text-left">{{ key2 }}</th><td class="text-right">{{ value2 }}</td></tr>
+						{% endfor %}
+					{% else %}
+						<tr><th class="text-left">{{ key1 }}</th><td class="text-right">{{ value1 }}</td></tr>
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				<tr><th class="text-left">{{ key }}</th><td class="text-right">{{ value }}</td></tr>
+			{% endif %}
+		{% endfor %}
+    </table>
+</div>
+
+
+<div class="table-responsive table-stripped">
+	<table class="table">
+		<thead>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+{% endblock content %}
