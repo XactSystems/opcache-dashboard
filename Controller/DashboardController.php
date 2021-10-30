@@ -11,7 +11,7 @@ class DashboardController extends AbstractController
     /**
      * @Route("/opcache-dashboard", name="xact_opcache_dashboard")
      */
-    function dashboard(): Response
+    public function dashboard(): Response
     {
         return $this->render('@XactOPCacheDashboard/dashboard.html.twig', [
             'configuration' => opcache_get_configuration(),
