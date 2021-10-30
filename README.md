@@ -14,7 +14,7 @@ composer require xactsystems/opcache-dashboard
 ### 2) Add the routes for the scheduler admin views
 config/routes.yaml
 ```yaml
-command_scheduler:
+opcache_dashboard:
     resource: "@XactOPCacheDashboard/Resources/config/routing.yaml"
 ```
 
