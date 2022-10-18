@@ -1,7 +1,5 @@
 {% extends "@XactOPCacheDashboard/layout.html.twig" %}
 
-{% dump(status) %}
-
 {% set hitRate = status['opcache_statistics']['opcache_hit_rate'] | round(2) %}
 {% set missRate = 100 - hitRate %}
 
