@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Xact\OPCacheDashboard\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Xact\OPCacheDashboard\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +15,6 @@ class XactOPCacheDashboardExtension extends Extension implements PrependExtensio
      * Load the DI configuration
      *
      * @param mixed[] $configs
-     *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function load(array $configs, ContainerBuilder $container): void
