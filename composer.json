@@ -22,7 +22,8 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.2.5",
-        "symfony/twig-bundle": "^3.4|^4.4"
+        "symfony/twig-bundle": "^3.4|^4.4",
+        "twig/twig": "^2.13|^3.0.4"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

@@ -63,17 +63,22 @@
 	<table class="table table-striped table-hover">
 		{% for key, value in status if key != 'scripts' %}
 			{% if value is iterable %}
+                <tr><th class="text-left" colspan="2"><h2>{{ key|replace({'_': ' '})|capitalize }}</h2></th></tr>
 				{% for key1, value1 in value %}
-					{% if value1 is iterable %}
-						{% for key2, value2 in value1 %}
-							<tr><th class="text-left">{{ key2 }}</th><td class="text-right">{{ value2 }}</td></tr>
-						{% endfor %}
-					{% else %}
-						<tr><th class="text-left">{{ key1 }}</th><td class="text-right">{{ value1 }}</td></tr>
-					{% endif %}
+                    {% if key1 in ['used_memory', 'free_memory', 'wasted_memory', 'buffer_size'] %}
+                        {% set value1 = (value1 / 1048576)|round(2) ~ ' MB' %}
+                    {% elseif key1 in ['current_wasted_percentage', 'opcache_hit_rate', 'wasted_memory', 'buffer_size'] %}
+                        {% set value1 = value1|round(2) ~ '%' %}
+                    {% elseif key1 in ['start_time', 'last_restart_time'] %}
+                        {% set value1 = value1 == 0 ? '' : value1|date('r') %}
+                    {% endif %}
+ 				    <tr><th class="text-left">{{ key1|replace({'_': ' '})|capitalize }}</th><td class="text-right">{{ value1 }}</td></tr>
 				{% endfor %}
 			{% else %}
-				<tr><th class="text-left">{{ key }}</th><td class="text-right">{{ value }}</td></tr>
+                {% if key in ['opcache_enabled', 'cache_full', 'restart_pending', 'restart_in_progress'] %}
+                    {% set value = value ? 'Yes' : 'No' %}
+                {% endif %}
+				<tr><th class="text-left">{{ key|replace({'_': ' '})|capitalize }}</th><td class="text-right">{{ value }}</td></tr>
 			{% endif %}
 		{% endfor %}
     </table>
