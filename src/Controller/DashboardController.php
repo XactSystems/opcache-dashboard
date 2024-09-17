@@ -10,9 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    /**
-     * @Route("/opcache-dashboard", name="xact_opcache_dashboard")
-     */
+    #[Route(path: '/opcache-dashboard', name: 'xact_opcache_dashboard')]
     public function dashboard(): Response
     {
         return $this->render('@XactOPCacheDashboard/dashboard.html.twig', [

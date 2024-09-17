@@ -1,0 +1,16 @@
+files:
+    '%CONFIG_DIR%/bundles.php':
+        type: php_array
+        entries:
+            Xact\OPCacheDashboard\XactOPCacheDashboardBundle:
+                dev: true
+                test: true
+        filters:
+            keys: [class_constant]
+            values: [single_line_array]
+
+    '%CONFIG_DIR%/routes/xact_opcache_dashboard.yaml':
+        type: yaml
+        content: |
+            xact_opcache_dashboard:
+                resource: "@XactOPCacheDashboardBundle/config/routes.yaml"
